@@ -22,7 +22,7 @@ module MENACE
 	  raise IllegalMoveError, "Field occupied"
 	end
 	
-	@fields[which_field] = :to_move  
+	@fields[which_field] = @to_move  
 	@history.push(which_field)
 	
       else

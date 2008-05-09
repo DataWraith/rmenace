@@ -29,6 +29,11 @@ describe "An empty TicTacToe grid" do
     it "should allow playing into field #{field}" do
       @grid.play(field).should_not raise_error("IllegalMove")
     end
+    
+     it "should record a valid move into field #{field}" do
+       @grid.play(field)
+       @grid.fields.should == [:empty] * field + [:x] + [:empty]*(8-field)
+     end
   end
 end
   
