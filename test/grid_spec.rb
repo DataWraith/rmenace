@@ -19,8 +19,7 @@ describe "An empty TicTacToe grid" do
     @grid.history.should == []
   end
   
-   it "should not allow undo" do
-   end
+   it "should not allow undo" 
    
   it "should have :x to move" do
     @grid.to_move.should == :x
