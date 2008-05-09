@@ -24,6 +24,7 @@ module MENACE
 	
 	@fields[which_field] = @to_move  
 	@history.push(which_field)
+	@move_nr += 1
 	
       else
 	raise IllegalMoveError, "Invalid field"
@@ -36,8 +37,16 @@ module MENACE
       end
     end
     
+    def undo
+      if @move_nr > 0
+	@fields[@history.pop] = :empty
+	else
+	  raise UndoImpossibleError, "No moves played yet"
+      end
+    end
+    
   end
   
   class IllegalMoveError < StandardError; end
-
+  class UndoImpossibleError < StandardError; end
 end

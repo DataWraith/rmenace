@@ -19,7 +19,9 @@ describe "An empty TicTacToe grid" do
     @grid.history.should == []
   end
   
-   it "should not allow undo" 
+  it "should not allow undo" do
+    lambda {@grid.undo}.should raise_error(MENACE::UndoImpossibleError, "No moves played yet")
+  end
    
   it "should have :x to move" do
     @grid.to_move.should == :x
@@ -27,13 +29,13 @@ describe "An empty TicTacToe grid" do
    
   (0..8).each do |field|
     it "should allow playing into field #{field}" do
-      @grid.play(field).should_not raise_error("IllegalMove")
+      @grid.play(field).should_not raise_error(MENACE::IllegalMoveError, "IllegalMove")
     end
     
-     it "should record a valid move into field #{field}" do
-       @grid.play(field)
-       @grid.fields.should == [:empty] * field + [:x] + [:empty]*(8-field)
-     end
+    it "should record a valid move into field #{field}" do
+      @grid.play(field)
+      @grid.fields.should == [:empty]*field + [:x] + [:empty]*(8-field)
+    end
   end
 end
   
@@ -60,19 +62,24 @@ describe "A TicTacToe grid" do
       
     @grid.play(1)
     @grid.to_move.should == :x
-  end  
+  end
   
-   it "should not allow playing into an occupied field" do
-     @grid.play(0)
-     lambda {@grid.play(0)}.should raise_error(MENACE::IllegalMoveError, "Field occupied")
-   end
+  it "should increase the move number after a valid move" do
+    @grid.play(0)
+    @grid.move_nr.should == 1
+  end
+  
+  it "should not allow playing into an occupied field" do
+    @grid.play(0)
+    lambda {@grid.play(0)}.should raise_error(MENACE::IllegalMoveError, "Field occupied")
+  end
    
-   it "should record history" do
-     @grid.play(0)
-     @grid.history.should == [0]
+  it "should record history" do
+    @grid.play(0)
+    @grid.history.should == [0]
      
-     @grid.play(1)
-     @grid.history.should == [0, 1]
-   end
+    @grid.play(1)
+    @grid.history.should == [0, 1]
+  end
   
 end
