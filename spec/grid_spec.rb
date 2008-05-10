@@ -7,6 +7,11 @@ describe "An empty TicTacToe grid" do
     @grid = MENACE::Grid.new
   end
   
+  it "should exist" do
+    @grid.should_not == nil
+    @grid.should be_an_instance_of(MENACE::Grid)
+  end
+  
   it "should be empty" do
     @grid.fields.should == [:empty]*9
   end
@@ -18,6 +23,10 @@ describe "An empty TicTacToe grid" do
   it "should have an empty move history" do
     @grid.history.should == []
   end
+  
+   it "should have gamestate :ongoing" do
+     @grid.gamestate.should == :ongoing
+   end
   
   it "should not allow undo" do
     lambda {@grid.undo}.should raise_error(MENACE::UndoImpossibleError, "No moves played yet")
@@ -36,6 +45,11 @@ describe "An empty TicTacToe grid" do
       @grid.play(field)
       @grid.fields.should == [:empty]*field + [:x] + [:empty]*(8-field)
     end
+    
+    it "should record a valid move on field #{field} into the history" do
+      @grid.play(field)
+      @grid.history.should == [field]
+    end
   end
 end
   
@@ -44,11 +58,8 @@ describe "A TicTacToe grid" do
   
   before(:each) do
     @grid = MENACE::Grid.new
-  end
-
-  it "should exist" do
-    @grid.should_not == nil
-    @grid.should be_an_instance_of(MENACE::Grid)
+    @grid.play(0)
+    @grid.play(8)
   end
   
   it "should not allow playing outside the field" do
@@ -57,29 +68,45 @@ describe "A TicTacToe grid" do
   end
 
   it "should change the player to move after a valid move" do
-    @grid.play(0)
-    @grid.to_move.should == :o
-      
-    @grid.play(1)
     @grid.to_move.should == :x
+    @grid.play(1)
+    @grid.to_move.should == :o
   end
   
+   it "should change the player to move after a valid undo" do
+     @grid.to_move.should == :x
+     @grid.undo
+     @grid.to_move.should == :o
+     @grid.undo
+     @grid.to_move.should == :x
+     lambda {@grid.undo}
+     @grid.to_move.should == :x
+   end
+  
   it "should increase the move number after a valid move" do
-    @grid.play(0)
-    @grid.move_nr.should == 1
+    @grid.move_nr.should == 2
   end
   
   it "should not allow playing into an occupied field" do
-    @grid.play(0)
     lambda {@grid.play(0)}.should raise_error(MENACE::IllegalMoveError, "Field occupied")
   end
    
   it "should record history" do
-    @grid.play(0)
-    @grid.history.should == [0]
+    @grid.history.should == [0, 8]
      
     @grid.play(1)
-    @grid.history.should == [0, 1]
+    @grid.history.should == [0, 8, 1]
   end
+  
+   it "should have gamestate :tie after a tie" do
+     @grid.play(1)
+     @grid.play(2)
+     @grid.play(5)
+     @grid.play(4)
+     @grid.play(6)
+     @grid.play(3)
+     @grid.play(7)
+     @grid.gamestate.should == :tie
+   end
   
 end
