@@ -35,18 +35,29 @@ module MENACE
       end
       
       change_player_to_move
+      adjust_gamestate(which_field)
     end
     
     def undo
       if @move_nr > 0
-	@fields[@history.pop] = :empty
+	field_to_change = @history.pop
+	@fields[field_to_change] = :empty
 	change_player_to_move
+	@move_nr -= 1
+	adjust_gamestate(field_to_change)
       else
 	raise UndoImpossibleError, "No moves played yet"
       end
     end
     
     private
+    
+    @@FIELDS_TO_CHECK = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], # rows
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], # columns
+      [0, 4, 8], [2, 4, 6]             # diagonals
+    ]
+    
     
     def change_player_to_move
       if @to_move == :x
@@ -56,7 +67,38 @@ module MENACE
       end
     end
     
+    def adjust_gamestate(changed_field)
+      if @fields[changed_field] == :empty
+	# Called from undo(), so we just set gamestate to :ongoing
+	@gamestate = :ongoing
+      else
+	# Called from play(), so we need to see whether someone won 
+	result = :ongoing
+	@@FIELDS_TO_CHECK.each do |field|
+	  if field.include?(changed_field)
+	    if (@fields[field[0]] == @fields[field[1]]) and 
+		(@fields[field[0]] == @fields[field[2]])
+	      result = @fields[changed_field]
+	    end
+	  end
+        end
+	case result
+	when :ongoing
+	  if (@move_nr == 9)
+	    @gamestate = :tie
+	  else
+	    @gamestate = :ongoing
+	  end
+	when :x
+	  @gamestate = :x_wins
+	when :o
+	  @gamestate = :o_wins
+	end
+      end
+    end
+  
   end
+   
   
   class IllegalMoveError < StandardError; end
   class UndoImpossibleError < StandardError; end

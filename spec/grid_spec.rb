@@ -24,9 +24,9 @@ describe "An empty TicTacToe grid" do
     @grid.history.should == []
   end
   
-   it "should have gamestate :ongoing" do
-     @grid.gamestate.should == :ongoing
-   end
+  it "should have gamestate :ongoing" do
+    @grid.gamestate.should == :ongoing
+  end
   
   it "should not allow undo" do
     lambda {@grid.undo}.should raise_error(MENACE::UndoImpossibleError, "No moves played yet")
@@ -73,15 +73,25 @@ describe "A TicTacToe grid" do
     @grid.to_move.should == :o
   end
   
-   it "should change the player to move after a valid undo" do
-     @grid.to_move.should == :x
-     @grid.undo
-     @grid.to_move.should == :o
-     @grid.undo
-     @grid.to_move.should == :x
-     lambda {@grid.undo}
-     @grid.to_move.should == :x
-   end
+  it "should change the player to move after a valid undo" do
+    @grid.to_move.should == :x
+    @grid.undo
+    @grid.to_move.should == :o
+    @grid.undo
+    @grid.to_move.should == :x
+    lambda {@grid.undo}
+    @grid.to_move.should == :x
+  end
+   
+  it "should reduce the move_number after a valid undo" do
+    @grid.move_nr.should == 2
+    @grid.undo
+    @grid.move_nr.should == 1
+    @grid.undo
+    @grid.move_nr.should == 0
+    lambda {@grid.undo}
+    @grid.move_nr.should == 0
+  end
   
   it "should increase the move number after a valid move" do
     @grid.move_nr.should == 2
@@ -98,15 +108,30 @@ describe "A TicTacToe grid" do
     @grid.history.should == [0, 8, 1]
   end
   
-   it "should have gamestate :tie after a tie" do
-     @grid.play(1)
-     @grid.play(2)
-     @grid.play(5)
-     @grid.play(4)
-     @grid.play(6)
-     @grid.play(3)
-     @grid.play(7)
-     @grid.gamestate.should == :tie
-   end
+  it "should have gamestate :tie after a tie" do
+    @grid.play(1)
+    @grid.play(2)
+    @grid.play(5)
+    @grid.play(4)
+    @grid.play(6)
+    @grid.play(3)
+    @grid.play(7)
+    @grid.gamestate.should == :tie
+  end
+   
+  it "should have gamestate :x_wins after X wins" do
+    @grid.play(1)
+    @grid.play(7)
+    @grid.play(2)
+    @grid.gamestate.should == :x_wins
+  end
+   
+  it "should have gamestate :o_wins after O wins" do
+    @grid.play(1)
+    @grid.play(2)
+    @grid.play(3)
+    @grid.play(5)
+    @grid.gamestate.should == :o_wins
+  end
   
 end
