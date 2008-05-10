@@ -4,12 +4,12 @@ require File.dirname(__FILE__) + '/../lib/grid.rb'
 describe "An empty TicTacToe grid" do
 
   before(:each) do
-    @grid = MENACE::Grid.new
+    @grid = TicTacToe::Grid.new
   end
 
   it "should exist" do
     @grid.should_not == nil
-    @grid.should be_an_instance_of(MENACE::Grid)
+    @grid.should be_an_instance_of(TicTacToe::Grid)
   end
 
   it "should be empty" do
@@ -29,7 +29,7 @@ describe "An empty TicTacToe grid" do
   end
 
   it "should not allow undo" do
-    lambda {@grid.undo}.should raise_error(MENACE::UndoImpossibleError, "No moves played yet")
+    lambda {@grid.undo}.should raise_error(TicTacToe::UndoImpossibleError, "No moves played yet")
   end
 
   it "should have :x as the player to move" do
@@ -38,7 +38,7 @@ describe "An empty TicTacToe grid" do
 
   (0..8).each do |field|
     it "should allow playing into field #{field}" do
-      @grid.play(field).should_not raise_error(MENACE::IllegalMoveError, "Illegal field")
+      @grid.play(field).should_not raise_error(TicTacToe::IllegalMoveError, "Illegal field")
     end
 
     it "should record a valid move into field #{field}" do
@@ -57,14 +57,14 @@ end
 describe "A TicTacToe grid" do
 
   before(:each) do
-    @grid = MENACE::Grid.new
+    @grid = TicTacToe::Grid.new
     @grid.play(0)
     @grid.play(8)
   end
 
   it "should not allow playing outside the field" do
-    lambda {@grid.play(-1)}.should raise_error(MENACE::IllegalMoveError, "Invalid field")
-    lambda {@grid.play(9)}.should raise_error(MENACE::IllegalMoveError, "Invalid field")
+    lambda {@grid.play(-1)}.should raise_error(TicTacToe::IllegalMoveError, "Invalid field")
+    lambda {@grid.play(9)}.should raise_error(TicTacToe::IllegalMoveError, "Invalid field")
   end
 
   it "should change the player to move after a valid move" do
@@ -98,7 +98,7 @@ describe "A TicTacToe grid" do
   end
 
   it "should not allow playing into an occupied field" do
-    lambda {@grid.play(0)}.should raise_error(MENACE::IllegalMoveError, "Field occupied")
+    lambda {@grid.play(0)}.should raise_error(TicTacToe::IllegalMoveError, "Field occupied")
   end
 
   it "should record history" do
@@ -113,7 +113,7 @@ end
 describe "A TicTacToe Grid with a finished game" do
 
   before(:each) do
-    @grid = MENACE::Grid.new
+    @grid = TicTacToe::Grid.new
     @grid.play(0)
     @grid.play(8)
     @grid.play(1)
@@ -124,7 +124,7 @@ describe "A TicTacToe Grid with a finished game" do
     @grid.play(2)
     for i in (0..8)
       if @grid.fields[i] == :empty
-	lambda {@grid.play(i)}.should raise_error(MENACE::IllegalMoveError, "Game already ended")
+	lambda {@grid.play(i)}.should raise_error(TicTacToe::IllegalMoveError, "Game already ended")
       end
     end
   end

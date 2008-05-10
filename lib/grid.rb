@@ -1,6 +1,6 @@
 
 
-module MENACE
+module TicTacToe
 
   class Grid
     attr_reader :fields
