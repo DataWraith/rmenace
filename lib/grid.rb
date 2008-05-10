@@ -18,13 +18,19 @@ module MENACE
     end
     
     def play(which_field)
+      
+      if @gamestate != :ongoing
+	raise IllegalMoveError, "Game already ended"
+      end
+     
       if not (0..8).include?(which_field) 
 	raise IllegalMoveError, "Invalid field"
       end
-	
+      
       if @fields[which_field] != :empty
 	raise IllegalMoveError, "Field occupied"
-      end
+      end         
+
 	
       @fields[which_field] = @to_move
       @history.push(which_field)

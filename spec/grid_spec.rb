@@ -108,8 +108,28 @@ describe "A TicTacToe grid" do
     @grid.history.should == [0, 8, 1]
   end
   
-  it "should have gamestate :tie after a tie" do
+end
+
+describe "A TicTacToe Grid with a finished game" do
+  
+  before(:each) do
+    @grid = MENACE::Grid.new
+    @grid.play(0)
+    @grid.play(8)
     @grid.play(1)
+  end
+  
+  it "should not allow playing on empty fields" do
+    @grid.play(7)
+    @grid.play(2)
+    for i in (0..8)
+      if @grid.fields[i] == :empty
+	lambda {@grid.play(i)}.should raise_error(MENACE::IllegalMoveError, "Game already ended") 
+      end
+    end
+  end
+  
+  it "should have gamestate :tie after a tie" do
     @grid.play(2)
     @grid.play(5)
     @grid.play(4)
@@ -120,18 +140,16 @@ describe "A TicTacToe grid" do
   end
    
   it "should have gamestate :x_wins after X wins" do
-    @grid.play(1)
     @grid.play(7)
     @grid.play(2)
     @grid.gamestate.should == :x_wins
   end
    
   it "should have gamestate :o_wins after O wins" do
-    @grid.play(1)
     @grid.play(2)
     @grid.play(3)
     @grid.play(5)
     @grid.gamestate.should == :o_wins
-  end
-  
+  end 
+   
 end
