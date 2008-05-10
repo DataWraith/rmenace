@@ -10,11 +10,11 @@ module MENACE
     attr_reader :gamestate
     
     def initialize
-      @fields = [:empty]*9
-      @move_nr = 0
-      @to_move = :x
-      @history = []
+      @move_nr   = 0
+      @to_move   = :x
+      @history   = []
       @gamestate = :ongoing
+      @fields    = [:empty]*9
     end
     
     def play(which_field)
@@ -30,30 +30,25 @@ module MENACE
       if @fields[which_field] != :empty
 	raise IllegalMoveError, "Field occupied"
       end         
-
 	
       @fields[which_field] = @to_move
       @history.push(which_field)
       @move_nr += 1
-      
-      if @move_nr == 9
-	@gamestate = :tie
-      end
-      
+          
       change_player_to_move
       adjust_gamestate(which_field)
     end
     
     def undo
-      if @move_nr > 0
-	field_to_change = @history.pop
-	@fields[field_to_change] = :empty
-	change_player_to_move
-	@move_nr -= 1
-	adjust_gamestate(field_to_change)
-      else
+      if @move_nr == 0
 	raise UndoImpossibleError, "No moves played yet"
       end
+
+      @fields[@history.pop] = :empty
+      @gamestate = :ongoing
+      @move_nr -= 1
+	
+      change_player_to_move	
     end
     
     private
@@ -74,33 +69,29 @@ module MENACE
     end
     
     def adjust_gamestate(changed_field)
-      if @fields[changed_field] == :empty
-	# Called from undo(), so we just set gamestate to :ongoing
-	@gamestate = :ongoing
-      else
-	# Called from play(), so we need to see whether someone won 
-	result = :ongoing
-	@@FIELDS_TO_CHECK.each do |field|
-	  if field.include?(changed_field)
-	    if (@fields[field[0]] == @fields[field[1]]) and 
-		(@fields[field[0]] == @fields[field[2]])
-	      result = @fields[changed_field]
-	    end
+      winner = :neither
+            
+      @@FIELDS_TO_CHECK.each do |f|
+	if f.include?(changed_field)
+	  if (@fields[f[0]] == @fields[f[1]]) and (@fields[f[1]] == @fields[f[2]])
+	    winner = @fields[changed_field]
 	  end
-        end
-	case result
-	when :ongoing
-	  if (@move_nr == 9)
-	    @gamestate = :tie
-	  else
-	    @gamestate = :ongoing
-	  end
-	when :x
-	  @gamestate = :x_wins
-	when :o
-	  @gamestate = :o_wins
 	end
       end
+      
+      case winner
+      when :x
+	@gamestate = :x_wins
+      when :o
+	@gamestate = :o_wins
+      else
+	if (@move_nr == 9)
+	  @gamestate = :tie
+	else
+	  @gamestate = :ongoing
+	end
+      end
+
     end
   
   end
