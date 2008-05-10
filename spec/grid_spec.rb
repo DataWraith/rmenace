@@ -1,5 +1,5 @@
  
-require 'grid'
+require File.dirname(__FILE__) + '/../lib/grid.rb'
 
 describe "An empty TicTacToe grid" do
   
