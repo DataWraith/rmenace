@@ -16,15 +16,15 @@ describe "An empty TicTacToe grid" do
     @grid.fields.should == [:empty]*9
   end
   
-  it "should have move number zero" do
+  it "should have move-number zero" do
     @grid.move_nr.should == 0
   end
    
-  it "should have an empty move history" do
+  it "should have an empty move-history" do
     @grid.history.should == []
   end
   
-  it "should have gamestate :ongoing" do
+  it "should have gamestate == :ongoing" do
     @grid.gamestate.should == :ongoing
   end
   
@@ -32,7 +32,7 @@ describe "An empty TicTacToe grid" do
     lambda {@grid.undo}.should raise_error(MENACE::UndoImpossibleError, "No moves played yet")
   end
    
-  it "should have :x to move" do
+  it "should have :x as the player to move" do
     @grid.to_move.should == :x
   end
    
@@ -83,7 +83,7 @@ describe "A TicTacToe grid" do
     @grid.to_move.should == :x
   end
    
-  it "should reduce the move_number after a valid undo" do
+  it "should reduce the move-number after a valid undo" do
     @grid.move_nr.should == 2
     @grid.undo
     @grid.move_nr.should == 1
@@ -93,7 +93,7 @@ describe "A TicTacToe grid" do
     @grid.move_nr.should == 0
   end
   
-  it "should increase the move number after a valid move" do
+  it "should increase the move-number after a valid move" do
     @grid.move_nr.should == 2
   end
   
@@ -150,6 +150,6 @@ describe "A TicTacToe Grid with a finished game" do
     @grid.play(3)
     @grid.play(5)
     @grid.gamestate.should == :o_wins
-  end 
+  end
    
 end
