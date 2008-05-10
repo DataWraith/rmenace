@@ -38,7 +38,7 @@ describe "An empty TicTacToe grid" do
    
   (0..8).each do |field|
     it "should allow playing into field #{field}" do
-      @grid.play(field).should_not raise_error(MENACE::IllegalMoveError, "IllegalMove")
+      @grid.play(field).should_not raise_error(MENACE::IllegalMoveError, "Illegal field")
     end
     
     it "should record a valid move into field #{field}" do
