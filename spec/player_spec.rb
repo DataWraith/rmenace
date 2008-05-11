@@ -13,8 +13,9 @@ describe "A Player" do
     @Player.should be_an_instance_of(TicTacToe::Player)
   end
 
-  it "should be named \"Player\"" do
-    @Player.name.should == "Player"
+  it "should have a name" do
+    @Player.name.should be_an_instance_of(String)
+    @Player.name.should_not == ""
   end
 
   it "should make exactly one move when prompted to" do
@@ -41,4 +42,3 @@ describe "A Player" do
     lambda {@Player.make_move(grid)}.should raise_error(TicTacToe::IllegalArgumentError, "Grid not playable")
   end
 end
-
