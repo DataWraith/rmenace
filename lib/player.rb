@@ -19,11 +19,14 @@ module TicTacToe
 
     def make_move(grid)
       check_for_valid_grid(grid)
+      grid.play(select_move(grid))
+    end
 
+    def select_move(grid)
+      # Select the first free field starting from top-left
       for i in (0..8) do
 	if grid.fields[i] == :empty
-	  grid.play(i)
-	  break
+	  return i
 	end
       end
     end
