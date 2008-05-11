@@ -59,7 +59,6 @@ module TicTacToe
       [0, 4, 8], [2, 4, 6]             # diagonals
     ]
 
-
     def change_player_to_move
       if @to_move == :x
 	@to_move = :o
@@ -91,7 +90,6 @@ module TicTacToe
 	  @gamestate = :ongoing
 	end
       end
-
     end
 
   end

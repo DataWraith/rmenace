@@ -83,7 +83,13 @@ describe "A TicTacToe grid" do
     @grid.to_move.should == :x
   end
 
-  it "should reduce the move-number after a valid undo" do
+  it "should increment the move-number after a valid move" do
+    @grid.move_nr.should == 2
+    @grid.play(5)
+    @grid.move_nr.should == 3
+  end
+
+  it "should decrement the move-number after a valid undo" do
     @grid.move_nr.should == 2
     @grid.undo
     @grid.move_nr.should == 1
@@ -91,10 +97,6 @@ describe "A TicTacToe grid" do
     @grid.move_nr.should == 0
     lambda {@grid.undo}
     @grid.move_nr.should == 0
-  end
-
-  it "should increase the move-number after a valid move" do
-    @grid.move_nr.should == 2
   end
 
   it "should not allow playing into an occupied field" do
@@ -130,12 +132,10 @@ describe "A TicTacToe Grid with a finished game" do
   end
 
   it "should have gamestate :tie after a tie" do
-    @grid.play(2)
-    @grid.play(5)
-    @grid.play(4)
-    @grid.play(6)
-    @grid.play(3)
-    @grid.play(7)
+    [2, 5, 4, 6, 3, 7].each do |f|
+      @grid.play(f)
+    end
+
     @grid.gamestate.should == :tie
   end
 
