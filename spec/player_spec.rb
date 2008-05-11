@@ -1,5 +1,6 @@
 
 require File.dirname(__FILE__) + '/../lib/player.rb'
+require File.dirname(__FILE__) + '/../lib/grid.rb'
 
 describe "A Player" do
 
@@ -24,6 +25,31 @@ describe "A Player" do
   it "should not allow the name to be changed to the empty string" do
     @Player.name = ""
     @Player.name.should_not == ""
+  end
+
+  it "should make exactly one move when prompted to" do
+    grid = TicTacToe::Grid.new
+    grid.play(4)
+    grid.play(1)
+    history_before = grid.history
+    @Player.make_move(grid)
+    history_after = grid.history
+
+    history_after.pop
+    history_after.should == history_before
+  end
+
+  it "should raise an error, when given an invalid grid object" do
+    lambda {@Player.make_move(nil)}.should raise_error
+    lambda {@Player.make_move(0)}.should raise_error
+
+    grid = TicTacToe::Grid.new
+    grid.play(0)
+    grid.play(1)
+    grid.play(4)
+    grid.play(5)
+    grid.play(8)
+    lambda {@Player.make_move(grid)}.should raise_error
   end
 end
 
