@@ -40,16 +40,15 @@ describe "A Player" do
   end
 
   it "should raise an error, when given an invalid grid object" do
-    lambda {@Player.make_move(nil)}.should raise_error
-    lambda {@Player.make_move(0)}.should raise_error
+    lambda {@Player.make_move(nil)}.should raise_error(TicTacToe::IllegalArgumentError, "Not a grid")
+    lambda {@Player.make_move(0)}.should raise_error(TicTacToe::IllegalArgumentError, "Not a grid")
 
     grid = TicTacToe::Grid.new
-    grid.play(0)
-    grid.play(1)
-    grid.play(4)
-    grid.play(5)
-    grid.play(8)
-    lambda {@Player.make_move(grid)}.should raise_error
+    [0, 1, 4, 5, 8].each do |f|
+      grid.play(f)
+    end
+
+    lambda {@Player.make_move(grid)}.should raise_error(TicTacToe::IllegalArgumentError, "Grid not playable")
   end
 end
 

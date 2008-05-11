@@ -31,5 +31,6 @@ module TicTacToe
 
   end
 
+  class IllegalArgumentError < StandardError; end
 end
 
