@@ -13,18 +13,8 @@ describe "A Player" do
     @Player.should be_an_instance_of(TicTacToe::Player)
   end
 
-  it "should initially be caled \"Player\"" do
+  it "should be named \"Player\"" do
     @Player.name.should == "Player"
-  end
-
-  it "shoud allow the name to be changed" do
-    @Player.name = "John"
-    @Player.name.should == "John"
-  end
-
-  it "should not allow the name to be changed to the empty string" do
-    @Player.name = ""
-    @Player.name.should_not == ""
   end
 
   it "should make exactly one move when prompted to" do

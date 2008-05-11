@@ -8,10 +8,6 @@ module TicTacToe
       "Random"
     end
 
-    def name=
-      # No changing allowed
-    end
-
     def make_move(grid)
       check_for_valid_grid(grid)
 
