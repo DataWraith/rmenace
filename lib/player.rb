@@ -12,7 +12,7 @@ module TicTacToe
       @name = new_name unless new_name == ""
     end
 
-    def make_move(grid)
+    def check_for_valid_grid(grid)
       if not grid.instance_of?(TicTacToe::Grid)
 	raise IllegalArgumentError, "Not a grid"
       end
@@ -20,6 +20,10 @@ module TicTacToe
       if not grid.gamestate == :ongoing
 	raise IllegalArgumentError, "Grid not playable"
       end
+    end
+
+    def make_move(grid)
+      check_for_valid_grid(grid)
 
       for i in (0..8) do
 	if grid.fields[i] == :empty
