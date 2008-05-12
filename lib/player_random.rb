@@ -11,9 +11,9 @@ module TicTacToe
     def select_move(grid)
       # Select a random move
       fields = get_empty_fields(grid)
-      fields.sort_by { rand }
+      fields = fields.sort_by { rand }
 
-      return fields[0]
+      return fields.first
     end
 
   end
