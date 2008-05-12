@@ -1,5 +1,5 @@
 
-require 'random_player.rb'
+require 'player_random.rb'
 
 module TicTacToe
 
