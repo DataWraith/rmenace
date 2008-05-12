@@ -30,11 +30,7 @@ module TicTacToe
 
     def select_move(grid)
       # Select the first free field starting from top-left
-      for i in (0..8) do
-	if grid.fields[i] == :empty
-	  return i
-	end
-      end
+      return get_empty_fields(grid).first
     end
 
   end
