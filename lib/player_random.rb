@@ -10,8 +10,7 @@ module TicTacToe
 
     def select_move(grid)
       # Select a random move
-      fields = (0..8).to_a
-      fields.delete_if { |x| grid.fields[x] != :empty }
+      fields = get_empty_fields(grid)
       fields.sort_by { rand }
 
       return fields[0]

@@ -17,6 +17,12 @@ module TicTacToe
       end
     end
 
+    def get_empty_fields(grid)
+      empty_fields = (0..8).to_a
+      empty_fields.delete_if { |x| grid.fields[x] != :empty }
+      return empty_fields
+    end
+
     def make_move(grid)
       check_for_valid_grid(grid)
       grid.play(select_move(grid))
