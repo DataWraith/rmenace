@@ -14,7 +14,7 @@ module TicTacToe
       if grid.fields[4] == :empty
 	return 4
       else
-	return yield(grid)
+	return super(grid)
       end
     end
 

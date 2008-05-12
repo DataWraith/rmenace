@@ -20,7 +20,7 @@ module TicTacToe
 	  return i
 	end
       end
-      return yield(grid)
+      return super(grid)
     end
 
   end
