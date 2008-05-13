@@ -12,9 +12,9 @@ module TicTacToe
     def select_move(grid)
       # Play center when possible, otherwise play randomly
       if grid.fields[4] == :empty
-	return 4
+        return 4
       else
-	return super(grid)
+        return super(grid)
       end
     end
 

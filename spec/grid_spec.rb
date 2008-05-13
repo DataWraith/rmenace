@@ -50,7 +50,9 @@ describe "An empty TicTacToe grid" do
       @grid.play(field)
       @grid.history.should == [field]
     end
+
   end
+
 end
 
 

@@ -16,11 +16,11 @@ module TicTacToe
 
     def check_for_valid_grid(grid)
       if not grid.instance_of?(TicTacToe::Grid)
-	raise IllegalArgumentError, "Not a grid"
+        raise IllegalArgumentError, "Not a grid"
       end
 
       if not grid.gamestate == :ongoing
-	raise IllegalArgumentError, "Grid not playable"
+        raise IllegalArgumentError, "Grid not playable"
       end
     end
 

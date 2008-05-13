@@ -20,15 +20,15 @@ module TicTacToe
     def play(which_field)
 
       if @gamestate != :ongoing
-	raise IllegalMoveError, "Game already ended"
+        raise IllegalMoveError, "Game already ended"
       end
 
       if not (0..8).include?(which_field)
-	raise IllegalMoveError, "Invalid field"
+        raise IllegalMoveError, "Invalid field"
       end
 
       if @fields[which_field] != :empty
-	raise IllegalMoveError, "Field occupied"
+        raise IllegalMoveError, "Field occupied"
       end
 
       @fields[which_field] = @to_move
@@ -41,7 +41,7 @@ module TicTacToe
 
     def undo
       if @move_nr == 0
-	raise UndoImpossibleError, "No moves played yet"
+        raise UndoImpossibleError, "No moves played yet"
       end
 
       @fields[@history.pop] = :empty
@@ -61,9 +61,9 @@ module TicTacToe
 
     def change_player_to_move
       if @to_move == :x
-	@to_move = :o
+        @to_move = :o
       else
-	@to_move = :x
+        @to_move = :x
       end
     end
 
@@ -71,24 +71,24 @@ module TicTacToe
       winner = :neither
 
       @@FIELDS_TO_CHECK.each do |f|
-	if f.include?(changed_field)
-	  if (@fields[f[0]] == @fields[f[1]]) and (@fields[f[1]] == @fields[f[2]])
-	    winner = @fields[changed_field]
-	  end
-	end
+        if f.include?(changed_field)
+          if (@fields[f[0]] == @fields[f[1]]) and (@fields[f[1]] == @fields[f[2]])
+            winner = @fields[changed_field]
+          end
+        end
       end
 
       case winner
       when :x
-	@gamestate = :x_wins
+        @gamestate = :x_wins
       when :o
-	@gamestate = :o_wins
+        @gamestate = :o_wins
       else
-	if (@move_nr == 9)
-	  @gamestate = :tie
-	else
-	  @gamestate = :ongoing
-	end
+        if (@move_nr == 9)
+          @gamestate = :tie
+        else
+          @gamestate = :ongoing
+        end
       end
     end
 
