@@ -1,5 +1,5 @@
 
-require 'player_random.rb'
+require File.dirname(__FILE__) + '/player_random.rb'
 
 module TicTacToe
 
