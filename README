@@ -1,3 +1,88 @@
-== MENACE
+rMENACE
+=======
 
-You should document your project here.
+The "Matchbox Educable Noughts-and-Crosses Engine" and other TicTacToe playing
+strategies, written in Ruby.
+
+
+Introduction
+------------
+
+rMENACE is a little toy project to help me learn Ruby and dip my toes into the
+waters of Behaviour Driven Development. It consists of several classes that
+implement algorithms for playing TicTacToe using a simple grid-class.
+
+
+How to play
+-----------
+
+[User interface not yet implemented]
+
+
+The strategies
+--------------
+
+* Player
+
+	Plays into the first free square starting from top-left. This isn't
+	supposed to be a real playing strategy; Player is just the base-class
+	from which all other players are derived, so it needed a
+	make_move()-function.
+
+* RandomPlayer
+
+	Plays randomly.
+
+* RandomFinishPlayer
+
+	Plays randomly, but connects three if possible.
+
+* CenterRandomPlayer
+
+	Plays center if possible, otherwise plays randomly.
+
+* MinimaxPlayer (currently broken)
+
+	A perfect player that examines all possible move-sequences using the
+	Minimax algorithm.
+
+* SimpleLearner (not yet implemented)
+
+	Copies winning move-sequences. Whenever a player wins, SimpleLearner
+	saves the move-sequence. In subsequent matches, it will try to follow
+	these move-sequences as far as its opponent will let it.
+
+	If it doesn't have a sequence to follow, it will play randomly.
+
+* MENACE (not yet implemented)
+
+	Donald Michie's Matchbox Educable Noughts-and-Crosses Engine algorithm.
+	Michie used matchboxes to represent every possible game-grid, and every
+	matchbox contained colored beads that represented one of the possible
+	moves.
+
+	If MENACE wins, additional beads are placed into the matchboxes, so
+	that it becomes more probable for MENACE to choose the same move
+	sequence that led to victory again.
+
+	If MENACE loses, the beads that were drawn to determine MENACE's moves
+	are not put back into the matchboxes, making it less likely that it will
+	repeat the losing move sequence.
+
+
+License
+-------
+
+Copyright (c) 2008, Johannes Holzfuß <Drangon@gmx.de>
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
