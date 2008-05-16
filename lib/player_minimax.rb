@@ -1,4 +1,5 @@
-require 'player.rb'
+
+require File.dirname(__FILE__) + '/player.rb'
 
 module TicTacToe
 
@@ -11,49 +12,48 @@ module TicTacToe
     def select_move(grid)
       search_grid = grid.clone
 
-      i_am_x = (grid.to_move == :x)
+      i_am_x = (search_grid.to_move == :x)
 
       best_move = -1
-      best_value = -Infinity
+      best_value = -10
 
-      for i in get_empty_fields(grid) do
-	search_grid.play(i)
+      for i in get_empty_fields(search_grid) do
+        search_grid.play(i)
 
-	value = minimax(search_grid)
-	value *= -1 unless i_am_x
+        value = minimax(search_grid)
+        value *= -1 unless i_am_x
 
-	if (value > best_value) or ((value == best_value) and (rand >= 0.5))
-	  best_move = i
-	  best_value = value
-	end
+        if (value > best_value) or ((value == best_value) and (rand >= 0.5))
+          best_move = i
+          best_value = value
+        end
 
-	search_grid.undo
+        search_grid.undo
       end
 
-      grid.play(best_move)
+      return best_move
     end
 
     def minimax(grid)
 
       case grid.gamestate
       when :tie
-	return 0
+        return 0
       when :x_wins
-	return Infinity
+        return 1
       when :o_wins
-	return -Infinity
+        return -1
       end
 
-      alpha = -Infinity
-      for i in get_empty_fields(grid) do
-	grid.play(i)
-	alpha = max(alpha, -minimax(grid))
-	grid.undo
+      alpha = -1
+      for j in get_empty_fields(grid) do
+        grid.play(j)
+        alpha = [alpha, -minimax(grid)].max
+        grid.undo
       end
 
       return alpha
     end
-
 
   end
 
