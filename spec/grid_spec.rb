@@ -135,6 +135,20 @@ describe "A TicTacToe Grid with a finished game", :shared => true do
     @grid.to_move.should == :no_one
   end
 
+  it "should allow undo" do
+    lambda {@grid.undo}.should_not raise_error
+  end
+
+  it "should have the correct player @to_move after undo" do
+    @grid.undo
+
+    if (@grid.move_nr % 2) == 0
+      @grid.to_move.should == :x
+    else
+      @grid.to_move.should == :o
+    end
+  end
+
 end
 
 describe "A TicTacToe Grid with a tied game" do

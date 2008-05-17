@@ -60,10 +60,10 @@ module TicTacToe
     ]
 
     def change_player_to_move
-      if @to_move == :x
-        @to_move = :o
-      else
+      if (@move_nr % 2) == 0
         @to_move = :x
+      else
+        @to_move = :o
       end
     end
 
