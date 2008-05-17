@@ -90,6 +90,10 @@ module TicTacToe
           @gamestate = :ongoing
         end
       end
+
+      if @gamestate != :ongoing
+        @to_move = :no_one
+      end
     end
 
   end

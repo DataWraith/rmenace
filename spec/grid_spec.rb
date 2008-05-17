@@ -114,43 +114,75 @@ describe "A TicTacToe grid" do
 
 end
 
-describe "A TicTacToe Grid with a finished game" do
+describe "A TicTacToe Grid with a finished game", :shared => true do
 
   before(:each) do
     @grid = TicTacToe::Grid.new
-    @grid.play(0)
-    @grid.play(8)
-    @grid.play(1)
+    [0, 8, 1, 7, 2].each do |f|
+      @grid.play(f)
+    end
   end
 
   it "should not allow playing on empty fields" do
-    @grid.play(7)
-    @grid.play(2)
     for i in (0..8)
       if @grid.fields[i] == :empty
-	lambda {@grid.play(i)}.should raise_error(TicTacToe::IllegalMoveError, "Game already ended")
+        lambda {@grid.play(i)}.should raise_error(TicTacToe::IllegalMoveError, "Game already ended")
       end
     end
   end
 
-  it "should have gamestate :tie after a tie" do
-    [2, 5, 4, 6, 3, 7].each do |f|
+  it "should have :no_one to_move" do
+    @grid.to_move.should == :no_one
+  end
+
+end
+
+describe "A TicTacToe Grid with a tied game" do
+
+  it_should_behave_like "A TicTacToe Grid with a finished game"
+
+  before(:each) do
+    @grid = TicTacToe::Grid.new
+    [0, 8, 1, 2, 5, 4, 6, 3, 7].each do |f|
       @grid.play(f)
     end
+  end
 
+  it "should have gamestate :tie" do
     @grid.gamestate.should == :tie
   end
 
-  it "should have gamestate :x_wins after X wins" do
-    @grid.play(7)
-    @grid.play(2)
+end
+
+describe "A TicTacToe Grid with a game won by X" do
+
+  it_should_behave_like "A TicTacToe Grid with a finished game"
+
+  before(:each) do
+    @grid = TicTacToe::Grid.new
+    [0, 8, 1, 7, 2].each do |f|
+      @grid.play(f)
+    end
+  end
+
+  it "should have gamestate :x_wins" do
     @grid.gamestate.should == :x_wins
   end
 
-  it "should have gamestate :o_wins after O wins" do
-    @grid.play(2)
-    @grid.play(3)
-    @grid.play(5)
+end
+
+describe "A TicTacToe Grid with a game won by O" do
+
+  it_should_behave_like "A TicTacToe Grid with a finished game"
+
+  before(:each) do
+    @grid = TicTacToe::Grid.new
+    [0, 8, 1, 2, 3, 5].each do |f|
+      @grid.play(f)
+    end
+  end
+
+  it "should have gamestate :o_wins" do
     @grid.gamestate.should == :o_wins
   end
 
