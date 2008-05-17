@@ -41,7 +41,7 @@ The strategies
 
 	Plays center if possible, otherwise plays randomly.
 
-* MinimaxPlayer (currently broken)
+* MinimaxPlayer
 
 	A perfect player that examines all possible move-sequences using the
 	Minimax algorithm.
