@@ -12,6 +12,11 @@ module TicTacToe
       grid.play(select_move(grid))
     end
 
+    def end_of_game(grid)
+      # This method is called at the end of a game to allow learning players to
+      # learn from the outcome of the game.
+    end
+
     private
 
     def check_for_valid_grid(grid)

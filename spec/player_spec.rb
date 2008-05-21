@@ -40,4 +40,10 @@ describe "A Player", :shared => true do
 
     lambda {@player.make_move(grid)}.should raise_error(TicTacToe::IllegalArgumentError, "Grid not playable")
   end
+
+  it "should have a end_of_game method" do
+    grid = TicTacToe::Grid.new
+    lambda{@player.end_of_game(grid)}.should_not raise_error
+  end
+
 end

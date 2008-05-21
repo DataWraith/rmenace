@@ -46,13 +46,14 @@ The strategies
 	A perfect player that examines all possible move-sequences using the
 	Minimax algorithm.
 
-* SimpleLearner (not yet implemented)
+* SimpleLearner
 
 	Copies winning move-sequences. Whenever a player wins, SimpleLearner
 	saves the move-sequence. In subsequent matches, it will try to follow
-	these move-sequences as far as its opponent will let it.
+	these move-sequences as far as its opponent will let it. It will also try
+	to prevent the opponent from following a known winning-sequence.
 
-	If it doesn't have a sequence to follow, it will play randomly.
+	If it doesn't have a sequence to follow/thwart, it will play randomly.
 
 * MENACE (not yet implemented)
 
