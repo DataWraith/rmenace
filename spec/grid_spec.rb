@@ -112,6 +112,20 @@ describe "A TicTacToe grid" do
     @grid.history.should == [0, 8, 1]
   end
 
+  it "should return all legal moves" do
+    if @grid.gamestate == :ongoing
+
+      for i in (0..8)
+        if @grid.fields[i] == :empty
+          @grid.legal_moves.should include(i)
+        end
+      end
+
+    else
+      @grid.legal_moves.should == []
+    end
+  end
+
 end
 
 describe "A TicTacToe Grid with a finished game", :shared => true do
