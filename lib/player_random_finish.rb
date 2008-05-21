@@ -12,12 +12,12 @@ module TicTacToe
     def select_move(grid)
       # Play randomly, but connect three if possible
 
-      for i in get_empty_fields(grid)
+      for i in grid.legal_moves
         grid.play(i)
         gamestate = grid.gamestate
         grid.undo
 
-        if (gamestate != :ongoing) and (gamestate != :tie)
+        if (gamestate == :x_wins) or (gamestate == :o_wins)
           return i
         end
       end

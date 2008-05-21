@@ -24,15 +24,9 @@ module TicTacToe
       end
     end
 
-    def get_empty_fields(grid)
-      empty_fields = (0..8).to_a
-      empty_fields.delete_if { |x| grid.fields[x] != :empty }
-      return empty_fields
-    end
-
     def select_move(grid)
       # Select the first free field starting from top-left
-      return get_empty_fields(grid).first
+      return grid.legal_moves.first
     end
 
   end
