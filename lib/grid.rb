@@ -10,11 +10,12 @@ module TicTacToe
     attr_reader :gamestate
 
     def initialize
-      @move_nr   = 0
-      @to_move   = :x
-      @history   = []
-      @gamestate = :ongoing
-      @fields    = [:empty]*9
+      @move_nr      = 0
+      @to_move      = :x
+      @history      = []
+      @gamestate    = :ongoing
+      @fields       = [:empty]*9
+      @empty_fields = (0..8).to_a
     end
 
     def play(which_field)
@@ -31,8 +32,10 @@ module TicTacToe
         raise IllegalMoveError, "Field occupied"
       end
 
-      @fields[which_field] = @to_move
       @history.push(which_field)
+      @fields[which_field] = @to_move
+      @empty_fields.delete(which_field)
+
       @move_nr += 1
 
       change_player_to_move
@@ -44,11 +47,23 @@ module TicTacToe
         raise UndoImpossibleError, "No moves played yet"
       end
 
-      @fields[@history.pop] = :empty
+      to_undo = @history.pop
+      @fields[to_undo] = :empty
+
+      @empty_fields += [to_undo]
+
       @gamestate = :ongoing
       @move_nr -= 1
 
       change_player_to_move
+    end
+
+    def legal_moves
+      if @gamestate != :ongoing
+        return []
+      else
+        return @empty_fields
+      end
     end
 
     private
