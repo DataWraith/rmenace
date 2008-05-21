@@ -1,57 +1,7 @@
 
 require File.dirname(__FILE__) + '/../lib/grid.rb'
 
-describe "An empty TicTacToe grid" do
-
-  before(:each) do
-    @grid = TicTacToe::Grid.new
-  end
-
-  it "should be empty" do
-    @grid.fields.should == [:empty]*9
-  end
-
-  it "should have move-number zero" do
-    @grid.move_nr.should == 0
-  end
-
-  it "should have an empty move-history" do
-    @grid.history.should == []
-  end
-
-  it "should have gamestate == :ongoing" do
-    @grid.gamestate.should == :ongoing
-  end
-
-  it "should not allow undo" do
-    lambda {@grid.undo}.should raise_error(TicTacToe::UndoImpossibleError, "No moves played yet")
-  end
-
-  it "should have :x as the player to move" do
-    @grid.to_move.should == :x
-  end
-
-  (0..8).each do |field|
-    it "should allow playing into field #{field}" do
-      @grid.play(field).should_not raise_error(TicTacToe::IllegalMoveError, "Illegal field")
-    end
-
-    it "should record a valid move into field #{field}" do
-      @grid.play(field)
-      @grid.fields.should == [:empty]*field + [:x] + [:empty]*(8-field)
-    end
-
-    it "should record a valid move on field #{field} into the history" do
-      @grid.play(field)
-      @grid.history.should == [field]
-    end
-
-  end
-
-end
-
-
-describe "A TicTacToe grid" do
+describe "A TicTacToe grid", :shared => true do
 
   before(:each) do
     @grid = TicTacToe::Grid.new
@@ -73,6 +23,13 @@ describe "A TicTacToe grid" do
     lambda {@grid.play(9)}.should raise_error(TicTacToe::IllegalMoveError, "Invalid field")
     lambda {@grid.play(nil)}.should raise_error(TicTacToe::IllegalMoveError, "Invalid field")
     lambda {@grid.play("foo")}.should raise_error(TicTacToe::IllegalMoveError, "Invalid field")
+  end
+
+  it "should not complain about valid moves" do
+    for i in @grid.legal_moves
+      lambda{@grid.play(i)}.should_not raise_error
+      @grid.undo
+    end
   end
 
   it "should not allow playing into an occupied field" do
@@ -102,15 +59,11 @@ describe "A TicTacToe grid" do
     end
   end
 
-  it "should change the player to move after a valid undo (and not change fater an invalid one)" do
-    to_move = @grid.to_move
-
+  it "should change the player to move after a valid undo" do
     if @grid.move_nr != 0
+      to_move = @grid.to_move
       @grid.undo
       @grid.to_move.should_not == to_move
-    else
-      lambda{@grid.undo}
-      @grid.to_move.should == to_move
     end
   end
 
@@ -137,12 +90,25 @@ describe "A TicTacToe grid" do
 
   # Grid.history
 
-  it "should record a complete history" do
+  it "should have matching contents for Grid.fields, Grid.move_nr and Grid.history" do
+    # Every played square should be recorded in history
     for i in (0..8)
       if @grid.fields[i] != :empty
         @grid.history.should include(i)
       end
     end
+
+    # Same number of moves recorded in history and move_nr
+    @grid.move_nr.should == @grid.history.length
+
+    # Same number of moves recorded in move_nr and fields
+    num_moves = 0
+    for i in (0..8)
+      if @grid.fields[i] != :empty
+        num_moves += 1
+      end
+    end
+    num_moves.should == @grid.move_nr
   end
 
   # Grid.legal_moves
@@ -163,7 +129,43 @@ describe "A TicTacToe grid" do
 
 end
 
+describe "An empty TicTacToe grid" do
+
+  it_should_behave_like "A TicTacToe grid"
+
+  before(:each) do
+    @grid = TicTacToe::Grid.new
+  end
+
+  it "should be empty" do
+    @grid.fields.should == [:empty]*9
+  end
+
+  it "should have move-number zero" do
+    @grid.move_nr.should == 0
+  end
+
+  it "should have an empty move-history" do
+    @grid.history.should be_empty
+  end
+
+  it "should have gamestate == :ongoing" do
+    @grid.gamestate.should == :ongoing
+  end
+
+  it "should not allow undo" do
+    lambda {@grid.undo}.should raise_error(TicTacToe::UndoImpossibleError, "No moves played yet")
+  end
+
+  it "should have :x as the player to move" do
+    @grid.to_move.should == :x
+  end
+
+end
+
 describe "A TicTacToe Grid with a finished game", :shared => true do
+
+  it_should_behave_like "A TicTacToe grid"
 
   before(:each) do
     @grid = TicTacToe::Grid.new
@@ -213,6 +215,10 @@ describe "A TicTacToe Grid with a tied game" do
 
   it "should have gamestate :tie" do
     @grid.gamestate.should == :tie
+  end
+
+  it "should have all fields occupied" do
+    @grid.fields.should_not include(:empty)
   end
 
 end
