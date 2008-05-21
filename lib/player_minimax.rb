@@ -13,7 +13,7 @@ module TicTacToe
 
       move_eval = []
 
-      for i in grid.legal_moves.clone do
+      for i in grid.legal_moves.sort_by {rand(3) - 1}
         grid.play(i)
         move_eval += [[minimax(grid), i]] # [move value, move number]
         grid.undo
