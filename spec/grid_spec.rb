@@ -7,11 +7,6 @@ describe "An empty TicTacToe grid" do
     @grid = TicTacToe::Grid.new
   end
 
-  it "should exist" do
-    @grid.should_not == nil
-    @grid.should be_an_instance_of(TicTacToe::Grid)
-  end
-
   it "should be empty" do
     @grid.fields.should == [:empty]*9
   end
@@ -64,65 +59,105 @@ describe "A TicTacToe grid" do
     @grid.play(8)
   end
 
-  it "should not allow playing outside the field" do
+  # Grid
+
+  it "should exist" do
+    @grid.should_not be_nil
+    @grid.should be_an_instance_of(TicTacToe::Grid)
+  end
+
+  # Grid.play
+
+  it "should complain about invalid moves" do
     lambda {@grid.play(-1)}.should raise_error(TicTacToe::IllegalMoveError, "Invalid field")
     lambda {@grid.play(9)}.should raise_error(TicTacToe::IllegalMoveError, "Invalid field")
-  end
-
-  it "should change the player to move after a valid move" do
-    @grid.to_move.should == :x
-    @grid.play(1)
-    @grid.to_move.should == :o
-  end
-
-  it "should change the player to move after a valid undo" do
-    @grid.to_move.should == :x
-    @grid.undo
-    @grid.to_move.should == :o
-    @grid.undo
-    @grid.to_move.should == :x
-    lambda {@grid.undo}
-    @grid.to_move.should == :x
-  end
-
-  it "should increment the move-number after a valid move" do
-    @grid.move_nr.should == 2
-    @grid.play(5)
-    @grid.move_nr.should == 3
-  end
-
-  it "should decrement the move-number after a valid undo" do
-    @grid.move_nr.should == 2
-    @grid.undo
-    @grid.move_nr.should == 1
-    @grid.undo
-    @grid.move_nr.should == 0
-    lambda {@grid.undo}
-    @grid.move_nr.should == 0
+    lambda {@grid.play(nil)}.should raise_error(TicTacToe::IllegalMoveError, "Invalid field")
+    lambda {@grid.play("foo")}.should raise_error(TicTacToe::IllegalMoveError, "Invalid field")
   end
 
   it "should not allow playing into an occupied field" do
-    lambda {@grid.play(0)}.should raise_error(TicTacToe::IllegalMoveError, "Field occupied")
+    for i in (0..8)
+      if @grid.fields[i] != :empty
+        lambda {@grid.play(i)}.should raise_error(TicTacToe::IllegalMoveError, "Field occupied")
+      end
+    end
   end
 
-  it "should record history" do
-    @grid.history.should == [0, 8]
-
-    @grid.play(1)
-    @grid.history.should == [0, 8, 1]
+  it "should record all legal moves correctly" do
+    for i in @grid.legal_moves
+      @grid.play(i)
+      @grid.fields[i].should_not == :empty
+      @grid.history.last.should == i
+      @grid.undo
+    end
   end
+
+  # Grid.to_move
+
+  it "should change the player to move after a valid move" do
+    to_move = @grid.to_move
+    if @grid.gamestate == :ongoing
+      @grid.play(@grid.legal_moves.first)
+      @grid.to_move.should_not == to_move
+    end
+  end
+
+  it "should change the player to move after a valid undo (and not change fater an invalid one)" do
+    to_move = @grid.to_move
+
+    if @grid.move_nr != 0
+      @grid.undo
+      @grid.to_move.should_not == to_move
+    else
+      lambda{@grid.undo}
+      @grid.to_move.should == to_move
+    end
+  end
+
+  # Grid.move_nr
+
+  it "should increment the move-number after a valid move" do
+    if @grid.gamestate == :ongoing
+      move_nr = @grid.move_nr
+      @grid.play(@grid.legal_moves.first)
+      @grid.move_nr.should == move_nr + 1
+    end
+  end
+
+  it "should decrement the move-number after a valid undo" do
+    if @grid.move_nr != 0
+      move_nr = @grid.move_nr
+      @grid.undo
+      @grid.move_nr.should == move_nr - 1
+    else
+      lambda{@grid.undo}
+      @grid.move_nr.should == 0
+    end
+  end
+
+  # Grid.history
+
+  it "should record a complete history" do
+    for i in (0..8)
+      if @grid.fields[i] != :empty
+        @grid.history.should include(i)
+      end
+    end
+  end
+
+  # Grid.legal_moves
 
   it "should return all legal moves" do
-    if @grid.gamestate == :ongoing
+    legal_moves = @grid.legal_moves
 
+    if @grid.gamestate != :ongoing
+      legal_moves.should be_empty
+    else
       for i in (0..8)
         if @grid.fields[i] == :empty
-          @grid.legal_moves.should include(i)
+          legal_moves.should include(i)
         end
       end
-
-    else
-      @grid.legal_moves.should == []
     end
   end
 
