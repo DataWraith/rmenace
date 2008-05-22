@@ -1,5 +1,5 @@
 
-require File.dirname(__FILE__) + '/player.rb'
+require 'player.rb'
 
 module TicTacToe
 
