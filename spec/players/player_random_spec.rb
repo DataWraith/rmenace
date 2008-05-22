@@ -1,6 +1,8 @@
 
-require File.dirname(__FILE__) + '/../lib/player_random.rb'
-require File.dirname(__FILE__) + '/player_spec.rb'
+require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
+
+require 'player_random.rb'
+require 'player_spec.rb'
 
 describe "A Player making random moves" do
 

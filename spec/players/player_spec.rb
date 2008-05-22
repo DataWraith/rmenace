@@ -1,6 +1,8 @@
 
-require File.dirname(__FILE__) + '/../lib/player.rb'
-require File.dirname(__FILE__) + '/../lib/grid.rb'
+require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
+
+require 'player.rb'
+require 'grid.rb'
 
 describe "A Player", :shared => true do
 

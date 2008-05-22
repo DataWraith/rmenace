@@ -1,6 +1,8 @@
 
-require File.dirname(__FILE__) + '/../lib/player_simple_learner.rb'
-require File.dirname(__FILE__) + '/player_spec.rb'
+require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
+
+require 'player_simple_learner.rb'
+require 'player_spec.rb'
 
 describe "A simple learning Player" do
 

@@ -1,6 +1,8 @@
 
-require File.dirname(__FILE__) + '/../lib/player_minimax.rb'
-require File.dirname(__FILE__) + '/player_spec.rb'
+require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
+
+require 'player_minimax.rb'
+require 'player_spec'
 
 describe "A perfect Minimax Player" do
 

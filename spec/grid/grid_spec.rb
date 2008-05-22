@@ -1,5 +1,7 @@
 
-require File.dirname(__FILE__) + '/../lib/grid.rb'
+require File.join(File.dirname(__FILE__), '..', 'spec_helper.rb')
+
+require 'grid.rb'
 
 describe "A TicTacToe grid", :shared => true do
 
