@@ -40,6 +40,8 @@ module TicTacToe
 
       change_player_to_move
       adjust_gamestate(which_field)
+
+      return @gamestate
     end
 
     def undo
@@ -68,7 +70,7 @@ module TicTacToe
 
     private
 
-    @@FIELDS_TO_CHECK = [
+    FIELDS_TO_CHECK = [
       [0, 1, 2], [3, 4, 5], [6, 7, 8], # rows
       [0, 3, 6], [1, 4, 7], [2, 5, 8], # columns
       [0, 4, 8], [2, 4, 6]             # diagonals
@@ -85,7 +87,7 @@ module TicTacToe
     def adjust_gamestate(changed_field)
       winner = :neither
 
-      @@FIELDS_TO_CHECK.each do |f|
+      FIELDS_TO_CHECK.each do |f|
         if f.include?(changed_field)
           if (@fields[f[0]] == @fields[f[1]]) and (@fields[f[1]] == @fields[f[2]])
             winner = @fields[changed_field]
