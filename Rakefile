@@ -31,6 +31,7 @@ end
 desc "Code coverage analysis"
 Spec::Rake::SpecTask.new('rcov') do |t|
   t.rcov = true
+  t.rcov_opts += ['--exclude spec/']
 end
 
 # default task is spec
