@@ -16,6 +16,10 @@ describe "A perfect Minimax Player" do
     end
   end
 
+  it "should be named 'MiniMax'" do
+    @player.name.should == "MiniMax"
+  end
+
   it "should connect three if possible (playing X)" do
     @player.make_move(@grid)
     @grid.history.last.should == 6

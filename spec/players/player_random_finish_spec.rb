@@ -12,6 +12,10 @@ describe "A Player making random moves, but connecting three if possible," do
     @player = TicTacToe::RandomFinishPlayer.new
   end
 
+  it "should be named 'Random Finish'" do
+    @player.name.should == "Random Finish"
+  end
+
   it "should connect three if possible" do
     grid = TicTacToe::Grid.new
     [0, 1, 3, 4].each do |i|

@@ -12,4 +12,8 @@ describe "A simple learning Player" do
     @player = TicTacToe::SimpleLearner.new
   end
 
+  it "should be named 'Simple Learner'" do
+    @player.name.should == "Simple Learner"
+  end
+
 end
