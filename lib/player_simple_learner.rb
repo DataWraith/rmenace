@@ -63,6 +63,11 @@ module TicTacToe
     end
 
     def end_of_game(grid)
+
+      # Check for invalid argument
+      super(grid)
+
+      # Do the actual learning
       if grid.gamestate == :x_wins
         @x_wins |= [grid.history]
       elsif grid.gamestate == :o_wins

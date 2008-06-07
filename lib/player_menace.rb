@@ -14,6 +14,13 @@ module TicTacToe
     end
 
     def end_of_game(grid)
+
+      # Error checking
+      super(grid)
+
+      # Do the actual learning
+
+      # TODO: Do the actual learning. :P
     end
 
   end
