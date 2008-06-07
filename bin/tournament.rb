@@ -31,8 +31,8 @@ module TicTacToe
         @players[player2].make_move(grid) unless grid.gamestate != :ongoing
       end
 
-      @players[player1].end_of_game(grid)
-      @players[player2].end_of_game(grid)
+      @players[player1].end_of_game(grid, :x)
+      @players[player2].end_of_game(grid, :o)
 
       case grid.gamestate
       when :tie

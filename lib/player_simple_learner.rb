@@ -62,10 +62,10 @@ module TicTacToe
       return available_moves.first
     end
 
-    def end_of_game(grid)
+    def end_of_game(grid, i_played)
 
       # Check for invalid argument
-      super(grid)
+      super(grid, i_played)
 
       # Do the actual learning
       if grid.gamestate == :x_wins

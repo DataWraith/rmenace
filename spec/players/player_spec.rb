@@ -50,14 +50,17 @@ describe "A Player", :shared => true do
   it "should have a end_of_game method that takes only finished games as argument" do
     grid = TicTacToe::Grid.new
 
-    lambda {@player.end_of_game(nil)}.should raise_error(TicTacToe::IllegalArgumentError, "Not a grid")
-    lambda {@player.end_of_game(grid)}.should raise_error(TicTacToe::IllegalArgumentError, "Not a finished game")
+    lambda {@player.end_of_game(nil, :x)}.should raise_error(TicTacToe::IllegalArgumentError, "Not a grid")
+    lambda {@player.end_of_game(grid, :o)}.should raise_error(TicTacToe::IllegalArgumentError, "Not a finished game")
 
     [0, 1, 3, 4, 6].each do |f|
       grid.play(f)
     end
 
-    lambda {@player.end_of_game(grid)}.should_not raise_error
+    lambda {@player.end_of_game(grid, nil)}.should raise_error(TicTacToe::IllegalArgumentError, "Invalid Player given")
+
+    lambda {@player.end_of_game(grid, :x)}.should_not raise_error
+    lambda {@player.end_of_game(grid, :o)}.should_not raise_error
   end
 
 end

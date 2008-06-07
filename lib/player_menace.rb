@@ -63,10 +63,10 @@ module TicTacToe
       end
     end
 
-    def end_of_game(grid)
+    def end_of_game(grid, i_played)
 
       # Error checking
-      super(grid)
+      super(grid, i_played)
 
       # Do the actual learning
 

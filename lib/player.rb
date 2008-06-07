@@ -13,7 +13,7 @@ module TicTacToe
       grid.play(select_move(grid))
     end
 
-    def end_of_game(grid)
+    def end_of_game(grid, i_played)
       # This method is called at the end of a game to allow learning players to
       # learn from the outcome of the game.
 
@@ -21,6 +21,10 @@ module TicTacToe
 
       if grid.gamestate == :ongoing
         raise IllegalArgumentError, "Not a finished game"
+      end
+
+      if (i_played != :x) and (i_played != :o)
+        raise IllegalArgumentError, "Invalid Player given"
       end
     end
 
