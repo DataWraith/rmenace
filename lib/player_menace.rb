@@ -5,6 +5,8 @@ module TicTacToe
 
   class MENACE < RandomPlayer
 
+    INITIAL_BEADS = 20
+
     def name
       "MENACE"
     end
@@ -23,10 +25,7 @@ module TicTacToe
       # smallest hash in all grids that are equivalent to the current one under
       # rotation/reflection.
 
-      canonical_grid = []
-      perm.each do |i|
-        canonical_grid.push(grid.fields[i])
-      end
+      canonical_grid = get_canonical_grid(grid, perm)
 
       # Now we look the position up in our matchboxes-hash
       if @matchboxes.include?(canonical_grid)
@@ -43,7 +42,8 @@ module TicTacToe
         # Find the move that bead advocates
         for i in (0..8)
           # Subtract number of beads advocating move i
-          number_beads -= @matchboxes[canonical_grid][i]
+
+          bead_number -= @matchboxes[canonical_grid][i]
 
           # If we reached zero, the bead we chose randomly was advocating move i
           if bead_number <= 0
@@ -68,8 +68,37 @@ module TicTacToe
       # Error checking
       super(grid, i_played)
 
-      # Do the actual learning
+      # Can't learn anything useful from a tie, so return.
+      return if grid.gamestate == :tie
 
+      # Did I win or lose?
+      if ((grid.gamestate == :x_wins) and (i_played == :x)) or
+          ((grid.gamestate == :o_wins) and (i_played == :o))
+        modifier = 1
+      else
+        modifier = -1
+      end
+
+      my_grid = Grid.new
+
+      # Go through the game and adjust matchboxes
+      for i in grid.history
+
+        if my_grid.to_move == i_played
+          perm = get_permutation(my_grid)
+          canonical_grid = get_canonical_grid(my_grid, perm)
+
+          # Prepare a matchbox if we don't have one yet
+          unless @matchboxes.include?(canonical_grid)
+            @matchboxes[canonical_grid] = [INITIAL_BEADS]*9
+          end
+
+          # Find the move we actually made and adjust its bead-count
+          @matchboxes[canonical_grid][perm[i]] += modifier
+        end
+
+        my_grid.play(i)
+      end
 
     end
 
@@ -104,6 +133,16 @@ module TicTacToe
       end
 
       return result
+    end
+
+    def  get_canonical_grid(grid, permutation)
+      canonical_grid = []
+
+      permutation.each do |i|
+        canonical_grid.push(grid.fields[i])
+      end
+
+      return canonical_grid
     end
 
   end
