@@ -8,6 +8,7 @@ require 'player_random_finish.rb'
 require 'player_center_random.rb'
 require 'player_minimax.rb'
 require 'player_simple_learner.rb'
+require 'player_menace.rb'
 
 module TicTacToe
 
@@ -15,6 +16,7 @@ module TicTacToe
 
     def initialize
       @players = []
+      @players.push(MENACE.new)
       @players.push(SimpleLearner.new)
       @players.push(Player.new)
       @players.push(RandomPlayer.new)
@@ -31,9 +33,6 @@ module TicTacToe
         @players[player2].make_move(grid) unless grid.gamestate != :ongoing
       end
 
-      @players[player1].end_of_game(grid, :x)
-      @players[player2].end_of_game(grid, :o)
-
       case grid.gamestate
       when :tie
         @results[@players[player1].name] += 1
@@ -46,6 +45,9 @@ module TicTacToe
         @results[@players[player2].name] += 3
         puts(@players[player2].name + " wins")
       end
+
+      @players[player1].end_of_game(grid, :x)
+      @players[player2].end_of_game(grid, :o)
     end
 
     def run

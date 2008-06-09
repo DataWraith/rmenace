@@ -90,11 +90,18 @@ module TicTacToe
 
           # Prepare a matchbox if we don't have one yet
           unless @matchboxes.include?(canonical_grid)
-            @matchboxes[canonical_grid] = [INITIAL_BEADS]*9
+            matchbox = [0]*9
+            for move in my_grid.legal_moves
+              matchbox[move] = INITIAL_BEADS
+            end
+
+            @matchboxes[canonical_grid] = matchbox
           end
 
           # Find the move we actually made and adjust its bead-count
-          @matchboxes[canonical_grid][perm[i]] += modifier
+          bead_count = @matchboxes[canonical_grid][perm[i]]
+          bead_count = [1, bead_count + modifier].max
+          @matchboxes[canonical_grid][perm[i]] = bead_count
         end
 
         my_grid.play(i)
