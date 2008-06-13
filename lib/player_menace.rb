@@ -34,19 +34,19 @@ module TicTacToe
 
         # Count all beads in the matchbox
         sum = 0
-        @matchboxes[canonical_grid].each { |i| sum += i }
+        @matchboxes[canonical_grid].each { |beads| sum += beads }
 
         # Choose randomly among the beads
         bead_number = rand(sum)
 
-        # Find the move that bead advocates
+        # Find the move the chosen bead advocates
         for i in (0..8)
           # Subtract number of beads advocating move i
 
           bead_number -= @matchboxes[canonical_grid][i]
 
           # If we reached zero, the bead we chose randomly was advocating move i
-          if bead_number <= 0
+          if bead_number < 0
             # Now we know the move we want to make on the 'canonical' grid.
 
             # We now need to find the move in our actual grid that corresponds
@@ -54,6 +54,7 @@ module TicTacToe
             for move in grid.legal_moves
               return move if perm[move] == i
             end
+            raise "No move found, after determining that a move must exist."
           end
         end
 
@@ -90,9 +91,10 @@ module TicTacToe
 
           # Prepare a matchbox if we don't have one yet
           unless @matchboxes.include?(canonical_grid)
-            matchbox = [0]*9
-            for move in my_grid.legal_moves
-              matchbox[move] = INITIAL_BEADS
+
+            matchbox = (0..8).collect do |square|
+              return INITIAL_BEADS if my_grid.legal_moves.include?(perm[square])
+              return 0
             end
 
             @matchboxes[canonical_grid] = matchbox
