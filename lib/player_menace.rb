@@ -5,8 +5,6 @@ module TicTacToe
 
   class MENACE < RandomPlayer
 
-    INITIAL_BEADS = 20
-
     def name
       "MENACE"
     end
@@ -93,7 +91,16 @@ module TicTacToe
           unless @matchboxes.include?(canonical_grid)
 
             matchbox = (0..8).collect do |square|
-              return INITIAL_BEADS if my_grid.legal_moves.include?(perm[square])
+
+              # Is that move legal?
+              if my_grid.legal_moves.include?(perm[square])
+                # Return as many beads as there are legal moves. The rationale
+                # behind this, is that there is more diversity earlier in the
+                # game-tree (i.e. more children of early nodes, more to explore)
+                return my_grid.legal_moves.length
+              end
+
+              # Illegal Move. Zero beads.
               return 0
             end
 
