@@ -93,11 +93,14 @@ module TicTacToe
             matchbox = (0..8).collect do |square|
 
               # Is that move legal?
-              if my_grid.legal_moves.include?(perm[square])
-                # Return as many beads as there are legal moves. The rationale
-                # behind this, is that there is more diversity earlier in the
-                # game-tree (i.e. more children of early nodes, more to explore)
-                return my_grid.legal_moves.length
+              for move in my_grid.legal_moves
+                if perm[move] == square
+                  # Return as many beads as there are legal moves. The rationale
+                  # behind this, is that there is more diversity earlier in the
+                  # game-tree (i.e. more children of early nodes, more to
+                  # explore)
+                  return my_grid.legal_moves.length
+                end
               end
 
               # Illegal Move. Zero beads.
