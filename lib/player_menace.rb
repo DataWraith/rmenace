@@ -1,4 +1,5 @@
 
+require 'yaml'
 require 'player_random.rb'
 
 module TicTacToe
@@ -92,6 +93,9 @@ module TicTacToe
 
             matchbox = (0..8).collect do |square|
 
+              # Zero beads by default (illegal move)
+              return_value = 0
+
               # Is that move legal?
               for move in my_grid.legal_moves
                 if perm[move] == square
@@ -99,12 +103,11 @@ module TicTacToe
                   # behind this, is that there is more diversity earlier in the
                   # game-tree (i.e. more children of early nodes, more to
                   # explore)
-                  return my_grid.legal_moves.length
+                  return_value = my_grid.legal_moves.length
                 end
               end
 
-              # Illegal Move. Zero beads.
-              return 0
+              return_value
             end
 
             @matchboxes[canonical_grid] = matchbox
