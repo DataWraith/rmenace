@@ -3,7 +3,7 @@
 $:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
 $:.unshift File.join(File.dirname(__FILE__), '..', 'bin')
 
-# Add the test-files to the path
+# Add the spec-files to the path
 $:.unshift File.join(File.dirname(__FILE__), 'grid')
 $:.unshift File.join(File.dirname(__FILE__), 'players')
 

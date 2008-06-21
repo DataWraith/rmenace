@@ -16,7 +16,7 @@ describe "A Player", :shared => true do
 
   it "should have a name" do
     @player.name.should be_an_instance_of(String)
-    @player.name.should_not == ""
+    @player.name.should_not be_empty
   end
 
   it "should make exactly one move when prompted to" do
