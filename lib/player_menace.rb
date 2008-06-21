@@ -1,5 +1,4 @@
 
-require 'yaml'
 require 'player_random.rb'
 
 module TicTacToe
@@ -104,6 +103,7 @@ module TicTacToe
                   # game-tree (i.e. more children of early nodes, more to
                   # explore)
                   return_value = my_grid.legal_moves.length
+                  break
                 end
               end
 
