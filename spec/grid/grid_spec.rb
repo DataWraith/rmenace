@@ -92,25 +92,16 @@ describe "A TicTacToe grid", :shared => true do
 
   # Grid.history
 
-  it "should have matching contents for Grid.fields, Grid.move_nr and Grid.history" do
-    # Every played square should be recorded in history
+  it "should have recorded every move in the history-array" do
     for i in (0..8)
       if @grid.fields[i] != :empty
         @grid.history.should include(i)
       end
     end
+  end
 
-    # Same number of moves recorded in history and move_nr
+  it "should have the history agree with move_nr on the number of moves played so far" do
     @grid.move_nr.should == @grid.history.length
-
-    # Same number of moves recorded in move_nr and fields
-    num_moves = 0
-    for i in (0..8)
-      if @grid.fields[i] != :empty
-        num_moves += 1
-      end
-    end
-    num_moves.should == @grid.move_nr
   end
 
   # Grid.legal_moves
