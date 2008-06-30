@@ -19,7 +19,7 @@ describe "A Player", :shared => true do
     @player.name.should_not be_empty
 
     # Is there a nicer way to do this?
-    if @player.is_a?(TicTacToe::Player)
+    if @player.instance_of?(TicTacToe::Player)
       @player.name.should == "Player"
     end
   end
