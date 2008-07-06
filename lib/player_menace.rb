@@ -112,7 +112,7 @@ module TicTacToe
 
             (0..8).each {|x|
               if (canonical_grid[x] != :empty) and (matchbox[x] != 0)
-                puts "Problem."
+                puts "Problem:"
                 puts
                 p canonical_grid.collect { |x|
                   case x
@@ -156,9 +156,9 @@ module TicTacToe
     PERMUTATIONS = [
       # Rotations (clockwise)
       [0, 1, 2, 3, 4, 5, 6, 7, 8], # 0°
-      [2, 5, 8, 1, 4, 7, 0, 3, 6], # 90°
+      #[2, 5, 8, 1, 4, 7, 0, 3, 6], # 90°
       [8, 7, 6, 5, 4, 3, 2, 1, 0], # 180°
-      [6, 3, 0, 7, 4, 1, 8, 5, 2], # 270°
+      #[6, 3, 0, 7, 4, 1, 8, 5, 2], # 270°
       # Mirror + Rotations (clockwise)
       [2, 1, 0, 5, 4, 3, 8, 7, 6], # 0°
       [8, 5, 2, 7, 4, 1, 6, 3, 0], # 90°
