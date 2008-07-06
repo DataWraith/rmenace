@@ -88,7 +88,7 @@ module TicTacToe
           canonical_grid = get_canonical_grid(my_grid, perm)
 
           # Prepare a matchbox if we don't have one yet
-          unless @matchboxes.include?(canonical_grid)
+          unless @matchboxes.has_key?(canonical_grid)
 
             matchbox = (0..8).collect do |square|
 
@@ -110,13 +110,40 @@ module TicTacToe
               return_value
             end
 
+            (0..8).each {|x|
+              if (canonical_grid[x] != :empty) and (matchbox[x] != 0)
+                puts "Problem."
+                puts
+                p canonical_grid.collect { |x|
+                  case x
+                  when :empty
+                    0
+                  when :x
+                    1
+                  when :o
+                    2
+                  end
+                }
+                p matchbox
+                puts
+                print "Permutation:"
+                p perm
+                puts
+                break
+              end
+            }
+
             @matchboxes[canonical_grid] = matchbox
           end
 
           # Find the move we actually made and adjust its bead-count
-          bead_count = @matchboxes[canonical_grid][perm[i]]
+          matchbox = @matchboxes[canonical_grid].clone
+
+          bead_count = matchbox[perm[i]]
           bead_count = [1, bead_count + modifier].max
-          @matchboxes[canonical_grid][perm[i]] = bead_count
+          matchbox[perm[i]] = bead_count
+
+          @matchboxes[canonical_grid] = matchbox
         end
 
         my_grid.play(i)
@@ -127,20 +154,22 @@ module TicTacToe
     private
 
     PERMUTATIONS = [
-      [0, 1, 2, 3, 4, 5, 6, 7, 8], # Do nothing
-      [6, 3, 0, 7, 4, 1, 8, 5, 2], # Rotate 90° clockwise
-      [8, 7, 6, 5, 4, 3, 2, 1, 0], # Rotate 180°
-      [2, 5, 8, 1, 4, 7, 0, 3, 6], # Rotate 270° clockwise
-      [2, 1, 0, 5, 4, 3, 8, 7, 6], # Mirror
-      [8, 5, 2, 7, 4, 1, 6, 3, 0], # Rotate Mirror 90° clockwise
-      [6, 7, 8, 3, 4, 5, 0, 1, 2], # Rotate Mirror 180°
-      [0, 3, 6, 1, 4, 7, 2, 5, 8]  # Rotate Mirror 270° clockwise
+      # Rotations (clockwise)
+      [0, 1, 2, 3, 4, 5, 6, 7, 8], # 0°
+      [2, 5, 8, 1, 4, 7, 0, 3, 6], # 90°
+      [8, 7, 6, 5, 4, 3, 2, 1, 0], # 180°
+      [6, 3, 0, 7, 4, 1, 8, 5, 2], # 270°
+      # Mirror + Rotations (clockwise)
+      [2, 1, 0, 5, 4, 3, 8, 7, 6], # 0°
+      [8, 5, 2, 7, 4, 1, 6, 3, 0], # 90°
+      [6, 7, 8, 3, 4, 5, 0, 1, 2], # 180°
+      [0, 3, 6, 1, 4, 7, 2, 5, 8]  # 270°
     ]
 
     def get_permutation(grid)
 
       result = []
-      smallest_hash = 1.0 / 0.0 # Infinity
+      smallest_hash = 1.0 / 0.0 # +Infinity
 
       PERMUTATIONS.each do |perm|
         permuted_array = []
