@@ -71,5 +71,7 @@ module TicTacToe
   end
 end
 
-t = TicTacToe::Tournament.new
-t.run
+if __FILE__ == $0
+  t = TicTacToe::Tournament.new
+  t.run
+end
