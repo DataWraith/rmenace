@@ -39,7 +39,7 @@ module TicTacToe
       @move_nr += 1
 
       change_player_to_move
-      adjust_gamestate(which_field)
+      adjust_gamestate
 
       return @gamestate
     end
@@ -84,14 +84,13 @@ module TicTacToe
       end
     end
 
-    def adjust_gamestate(changed_field)
+    def adjust_gamestate
       winner = :neither
 
       FIELDS_TO_CHECK.each do |f|
-        if f.include?(changed_field)
-          if (@fields[f[0]] == @fields[f[1]]) and (@fields[f[1]] == @fields[f[2]])
-            winner = @fields[changed_field]
-          end
+        if (@fields[f[0]] == @fields[f[1]]) and (@fields[f[1]] == @fields[f[2]])
+          winner = @fields[f[0]]
+          break
         end
       end
 
