@@ -2,13 +2,27 @@
 
 module TicTacToe
 
+  # Grid provides a simple Tic Tac Toe grid.
+  #
+  # It keeps track of the Gamestate and allows you to make and undo moves.
   class Grid
+
+    # An array with the current content of the grid fields (:x, :o or :empty)
     attr_reader :fields
+
+    # The number of moves made so far
     attr_reader :move_nr
+
+    # The player to move (:x, :o, :no_one)
     attr_reader :to_move
+
+    # An array containing the previously made moves (their field-indices)
     attr_reader :history
+
+    # The current gamestate (:onging, :x_wins, :o_wins, :tie)
     attr_reader :gamestate
 
+    # Create a new Grid
     def initialize
       @move_nr      = 0
       @to_move      = :x
@@ -18,6 +32,12 @@ module TicTacToe
       @empty_fields = (0..8).to_a
     end
 
+    # Make a move by passing in an index into the grid, with 0 being top-left
+    # and 8 being bottom-right.
+    #
+    # The method may raise an IllegalMoveError if you specify an ivalid index,
+    # specify a field that already is occupied or want to play into a grid when
+    # the game has already ended.
     def play(which_field)
 
       if not (0..8).include?(which_field)
@@ -44,7 +64,11 @@ module TicTacToe
       return @gamestate
     end
 
+    # Undo the last move.
+    #
+    # Raises an UndoImpossibleError if no moves have been made yet.
     def undo
+
       if @move_nr == 0
         raise UndoImpossibleError, "No moves played yet"
       end
@@ -60,6 +84,7 @@ module TicTacToe
       change_player_to_move
     end
 
+    # Return an array that contains all moves that are currently legal
     def legal_moves
       if @gamestate != :ongoing
         return []
