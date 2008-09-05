@@ -3,11 +3,13 @@ require 'rubygems'
 
 require 'rake'
 require 'rake/clean'
+require 'rake/rdoctask'
 require 'spec/rake/spectask'
 
 # clean
 CLEAN.include("spec-report.html")
 CLEAN.include("coverage/")
+CLEAN.include("doc/")
 
 # rspec
 
@@ -36,3 +38,19 @@ end
 
 # default task is spec
 task :default => :spec
+
+# rdoc
+
+desc "Generate documentation"
+Rake::RDocTask.new do |rdoc|
+  rdoc.title = "rMENACE"
+  rdoc.rdoc_dir = 'doc/'
+  rdoc.options += [
+    '--charset=utf8',
+    '--diagram',
+    '--image-format=png',
+    '--line-numbers',
+  ]
+  # rdoc.main = "README" (need to convert from Markdown first)
+  rdoc.rdoc_files.add ['README'] + FileList['lib/**/*.rb'] + FileList['bin/*']
+end
