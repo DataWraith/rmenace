@@ -51,6 +51,6 @@ Rake::RDocTask.new do |rdoc|
     '--image-format=png',
     '--line-numbers',
   ]
-  # rdoc.main = "README" (need to convert from Markdown first)
+  rdoc.main = "README"
   rdoc.rdoc_files.add ['README'] + FileList['lib/**/*.rb'] + FileList['bin/*']
 end
