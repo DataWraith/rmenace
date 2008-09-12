@@ -20,11 +20,11 @@ module TicTacToe
       check_for_valid_grid(grid)
 
       if grid.gamestate == :ongoing
-        raise IllegalArgumentError, "Not a finished game"
+        raise ArgumentError, "Not a finished game"
       end
 
       if (i_played != :x) and (i_played != :o)
-        raise IllegalArgumentError, "Invalid Player given"
+        raise ArgumentError, "Invalid Player given"
       end
     end
 
@@ -32,13 +32,13 @@ module TicTacToe
 
     def check_for_valid_grid(grid)
       if not grid.instance_of?(TicTacToe::Grid)
-        raise IllegalArgumentError, "Not a grid"
+        raise ArgumentError, "Not a grid"
       end
     end
 
     def check_for_playable_grid(grid)
       if not grid.gamestate == :ongoing
-        raise IllegalArgumentError, "Grid not playable"
+        raise ArgumentError, "Grid not playable"
       end
     end
 
@@ -49,6 +49,5 @@ module TicTacToe
 
   end
 
-  class IllegalArgumentError < StandardError; end
 end
 

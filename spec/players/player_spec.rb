@@ -37,15 +37,15 @@ describe "A Player", :shared => true do
   end
 
   it "should raise an error, when given an invalid grid object" do
-    lambda {@player.make_move(nil)}.should raise_error(TicTacToe::IllegalArgumentError, "Not a grid")
-    lambda {@player.make_move(0)}.should raise_error(TicTacToe::IllegalArgumentError, "Not a grid")
+    lambda {@player.make_move(nil)}.should raise_error(ArgumentError, "Not a grid")
+    lambda {@player.make_move(0)}.should raise_error(ArgumentError, "Not a grid")
 
     grid = TicTacToe::Grid.new
     [0, 1, 4, 5, 8].each do |f|
       grid.play(f)
     end
 
-    lambda {@player.make_move(grid)}.should raise_error(TicTacToe::IllegalArgumentError, "Grid not playable")
+    lambda {@player.make_move(grid)}.should raise_error(ArgumentError, "Grid not playable")
   end
 
   it "should have a end_of_game method" do
@@ -55,14 +55,14 @@ describe "A Player", :shared => true do
   it "should have a end_of_game method that takes only finished games as argument" do
     grid = TicTacToe::Grid.new
 
-    lambda {@player.end_of_game(nil, :x)}.should raise_error(TicTacToe::IllegalArgumentError, "Not a grid")
-    lambda {@player.end_of_game(grid, :o)}.should raise_error(TicTacToe::IllegalArgumentError, "Not a finished game")
+    lambda {@player.end_of_game(nil, :x)}.should raise_error(ArgumentError, "Not a grid")
+    lambda {@player.end_of_game(grid, :o)}.should raise_error(ArgumentError, "Not a finished game")
 
     [0, 1, 3, 4, 6].each do |f|
       grid.play(f)
     end
 
-    lambda {@player.end_of_game(grid, nil)}.should raise_error(TicTacToe::IllegalArgumentError, "Invalid Player given")
+    lambda {@player.end_of_game(grid, nil)}.should raise_error(ArgumentError, "Invalid Player given")
 
     lambda {@player.end_of_game(grid, :x)}.should_not raise_error
     lambda {@player.end_of_game(grid, :o)}.should_not raise_error

@@ -3,3 +3,6 @@ coverage/
 
 # rspec report
 spec-report.html
+
+# rdoc documentation
+doc/

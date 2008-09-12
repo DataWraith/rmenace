@@ -18,7 +18,7 @@ module TicTacToe
       # First we select a permutation.
       perm = get_permutation(grid)
 
-      # Using that permutation on the current grid, gives us the 'canonical'
+      # Using that permutation on the current grid gives us the 'canonical'
       # grid of the current position. The 'canonical' grid is the one with the
       # smallest hash in all grids that are equivalent to the current one under
       # rotation/reflection.
@@ -31,8 +31,7 @@ module TicTacToe
         # move weighted by previous experience.
 
         # Count all beads in the matchbox
-        sum = 0
-        @matchboxes[canonical_grid].each { |beads| sum += beads }
+        sum = @matchboxes[canonical_grid].inject { |sum, beads| sum + beads }
 
         # Choose randomly among the beads
         bead_number = rand(sum)

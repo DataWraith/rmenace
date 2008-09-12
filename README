@@ -1,26 +1,22 @@
-rMENACE
-=======
+= rMENACE
 
 The "Matchbox Educable Noughts-and-Crosses Engine" and other TicTacToe playing
 strategies, written in Ruby.
 
 
-Introduction
-------------
+== Introduction
 
 rMENACE is a little toy project to help me learn Ruby and dip my toes into the
 waters of Behaviour Driven Development. It consists of several classes that
 implement algorithms for playing TicTacToe using a simple grid-class.
 
 
-How to play
------------
+== How to play
 
 [User interface not yet implemented]
 
 
-The strategies
---------------
+== The strategies
 
 * Player
 
@@ -71,8 +67,7 @@ The strategies
 	repeat the losing move sequence.
 
 
-License
--------
+== License
 
 (The ISC license)
 
