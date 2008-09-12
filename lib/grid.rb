@@ -10,9 +10,6 @@ module TicTacToe
     # An array with the current content of the grid fields (:x, :o or :empty)
     attr_reader :fields
 
-    # The number of moves made so far
-    attr_reader :move_nr
-
     # The player to move (:x, :o, :no_one)
     attr_reader :to_move
 
@@ -22,9 +19,14 @@ module TicTacToe
     # The current gamestate (:onging, :x_wins, :o_wins, :tie)
     attr_reader :gamestate
 
+    # The number of moves made so far
+    def move_nr
+      @history.length
+    end
+
+
     # Create a new Grid
     def initialize
-      @move_nr      = 0
       @to_move      = :x
       @history      = []
       @gamestate    = :ongoing
@@ -56,8 +58,6 @@ module TicTacToe
       @fields[which_field] = @to_move
       @empty_fields.delete(which_field)
 
-      @move_nr += 1
-
       change_player_to_move
       adjust_gamestate
 
@@ -69,17 +69,15 @@ module TicTacToe
     # Raises an UndoImpossibleError if no moves have been made yet.
     def undo
 
-      if @move_nr == 0
+      if move_nr == 0
         raise UndoImpossibleError, "No moves played yet"
       end
 
       to_undo = @history.pop
       @fields[to_undo] = :empty
-
       @empty_fields += [to_undo]
 
       @gamestate = :ongoing
-      @move_nr -= 1
 
       change_player_to_move
     end
@@ -102,7 +100,7 @@ module TicTacToe
     ]
 
     def change_player_to_move
-      if (@move_nr % 2) == 0
+      if (move_nr % 2) == 0
         @to_move = :x
       else
         @to_move = :o
@@ -125,7 +123,7 @@ module TicTacToe
       when :o
         @gamestate = :o_wins
       else
-        if (@move_nr == 9)
+        if (move_nr == 9)
           @gamestate = :tie
         else
           @gamestate = :ongoing
