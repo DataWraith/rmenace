@@ -77,14 +77,14 @@ module TicTacToe
         modifier = -1
       end
 
-      my_grid = Grid.new
+      replay_grid = Grid.new
 
       # Go through the game and adjust matchboxes
       for i in grid.history
 
-        if my_grid.to_move == i_played
-          perm = get_permutation(my_grid)
-          canonical_grid = get_canonical_grid(my_grid, perm)
+        if replay_grid.to_move == i_played
+          perm = get_permutation(replay_grid)
+          canonical_grid = get_canonical_grid(replay_grid, perm)
 
           # Prepare a matchbox if we don't have one yet
           unless @matchboxes.has_key?(canonical_grid)
@@ -95,13 +95,13 @@ module TicTacToe
               return_value = 0
 
               # Is that move legal?
-              for move in my_grid.legal_moves
+              for move in replay_grid.legal_moves
                 if perm[move] == square
                   # Return as many beads as there are legal moves. The rationale
                   # behind this, is that there is more diversity earlier in the
                   # game-tree (i.e. more children of early nodes, more to
                   # explore)
-                  return_value = my_grid.legal_moves.length
+                  return_value = replay_grid.legal_moves.length
                   break
                 end
               end
@@ -145,7 +145,7 @@ module TicTacToe
           @matchboxes[canonical_grid] = matchbox
         end
 
-        my_grid.play(i)
+        replay_grid.play(i)
       end
 
     end
