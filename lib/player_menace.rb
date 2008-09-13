@@ -71,7 +71,7 @@ module TicTacToe
 
       # Did I win or lose?
       if ((grid.gamestate == :x_wins) and (i_played == :x)) or
-          ((grid.gamestate == :o_wins) and (i_played == :o))
+         ((grid.gamestate == :o_wins) and (i_played == :o))
         modifier = 1
       else
         modifier = -1
