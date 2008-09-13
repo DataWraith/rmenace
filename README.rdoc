@@ -18,53 +18,58 @@ implement algorithms for playing TicTacToe using a simple grid-class.
 
 == The strategies
 
-* Player
+=== Player
 
-	Plays into the first free square starting from top-left. This isn't
-	supposed to be a real playing strategy; Player is just the base-class
-	from which all other players are derived, so it needed a
-	make_move()-function.
+Plays into the first free square starting from top-left. This isn't supposed to
+be a real playing strategy; Player is just the base-class from which all other
+players are derived, so it needed a	make_move()-function.
 
-* RandomPlayer
 
-	Plays randomly.
+=== RandomPlayer
 
-* RandomFinishPlayer
+Plays randomly.
 
-	Plays randomly, but connects three if possible.
 
-* CenterRandomPlayer
+=== RandomFinishPlayer
 
-	Plays center if possible, otherwise plays randomly.
+Plays randomly, but connects three if possible.
 
-* MinimaxPlayer
 
-	A perfect player that examines all possible move-sequences using the
-	Minimax algorithm.
+=== CenterRandomPlayer
 
-* SimpleLearner
+Plays center if possible, otherwise plays randomly.
 
-	Copies winning move-sequences. Whenever a player wins, SimpleLearner
-	saves the move-sequence. In subsequent matches, it will try to follow
-	these move-sequences as far as its opponent will let it. It will also try
-	to prevent the opponent from following a known winning-sequence.
 
-	If it doesn't have a sequence to follow/thwart, it will play randomly.
+=== MinimaxPlayer
 
-* MENACE (not yet implemented)
+A perfect player that examines all possible move-sequences using the Minimax
+algorithm.
 
-	Donald Michie's Matchbox Educable Noughts-and-Crosses Engine algorithm.
-	Michie used matchboxes to represent every possible game-grid, and every
-	matchbox contained colored beads that represented one of the possible
-	moves.
 
-	If MENACE wins, additional beads are placed into the matchboxes, so
-	that it becomes more probable for MENACE to choose the same move
-	sequence that led to victory again.
+=== SimpleLearner
 
-	If MENACE loses, the beads that were drawn to determine MENACE's moves
-	are not put back into the matchboxes, making it less likely that it will
-	repeat the losing move sequence.
+Copies winning move-sequences. Whenever a player wins, SimpleLearner saves the
+move-sequence. In subsequent matches, it will try to follow these move-sequences
+as far as its opponent will let it. It will also try to prevent the opponent
+from following a known winning-sequence.
+
+If it doesn't have a sequence to follow/thwart, it will play randomly.
+
+
+=== MENACE (not yet implemented)
+
+Donald Michie's Matchbox Educable Noughts-and-Crosses Engine algorithm.
+
+Michie used matchboxes to represent every possible game-grid, and every matchbox
+contained colored beads that represented one of the possible moves.
+
+If MENACE wins, additional beads are placed into the matchboxes, so that it
+becomes more probable for MENACE to choose the same move sequence that led to
+victory again.
+
+If MENACE loses, the beads that were drawn to determine MENACE's moves are not
+put back into the matchboxes, making it less likely that it will repeat the
+losing move sequence.
 
 
 == License
