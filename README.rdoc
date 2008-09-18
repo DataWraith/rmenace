@@ -56,7 +56,7 @@ from following a known winning-sequence.
 If it doesn't have a sequence to follow/thwart, it will play randomly.
 
 
-=== MENACE (not yet implemented)
+=== MENACE
 
 Donald Michie's Matchbox Educable Noughts-and-Crosses Engine algorithm.
 
