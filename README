@@ -51,7 +51,7 @@ implement algorithms for playing TicTacToe using a simple grid-class.
 
 	If it doesn't have a sequence to follow/thwart, it will play randomly.
 
-* MENACE (not yet implemented)
+* MENACE
 
 	Donald Michie's Matchbox Educable Noughts-and-Crosses Engine algorithm.
 	Michie used matchboxes to represent every possible game-grid, and every

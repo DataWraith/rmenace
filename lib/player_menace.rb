@@ -19,9 +19,9 @@ module TicTacToe
       perm = get_permutation(grid)
 
       # Using that permutation on the current grid gives us the 'canonical'
-      # grid of the current position. The 'canonical' grid is the one with the
-      # smallest hash in all grids that are equivalent to the current one under
-      # rotation/reflection.
+      # grid of the current position. The 'canonical' grid is the one that,
+      # converted to a string, is the smallest when compared to all other grids
+      # that are equivalent under rotation/reflection.
 
       canonical_grid = get_canonical_grid(grid, perm)
 
@@ -87,7 +87,7 @@ module TicTacToe
           canonical_grid = get_canonical_grid(replay_grid, perm)
 
           # Prepare a matchbox if we don't have one yet
-          unless @matchboxes.has_key?(canonical_grid)
+          unless @matchboxes.include?(canonical_grid)
 
             matchbox = (0..8).collect do |square|
 
@@ -98,9 +98,8 @@ module TicTacToe
               for move in replay_grid.legal_moves
                 if perm[move] == square
                   # Return as many beads as there are legal moves. The rationale
-                  # behind this, is that there is more diversity earlier in the
-                  # game-tree (i.e. more children of early nodes, more to
-                  # explore)
+                  # behind this is that there is more diversity earlier in the
+                  # game-tree (i.e. more child-nodes, more to explore)
                   return_value = replay_grid.legal_moves.length
                   break
                 end
@@ -109,40 +108,17 @@ module TicTacToe
               return_value
             end
 
-            (0..8).each {|x|
-              if (canonical_grid[x] != :empty) and (matchbox[x] != 0)
-                puts "Problem:"
-                puts
-                p canonical_grid.collect { |x|
-                  case x
-                  when :empty
-                    0
-                  when :x
-                    1
-                  when :o
-                    2
-                  end
-                }
-                p matchbox
-                puts
-                print "Permutation:"
-                p perm
-                puts
-                break
-              end
-            }
-
             @matchboxes[canonical_grid] = matchbox
           end
 
           # Find the move we actually made and adjust its bead-count
-          matchbox = @matchboxes[canonical_grid].clone
+          matchbox = @matchboxes[canonical_grid]
 
           bead_count = matchbox[perm[i]]
           bead_count = [1, bead_count + modifier].max
           matchbox[perm[i]] = bead_count
 
-          @matchboxes[canonical_grid] = matchbox
+          #@matchboxes[canonical_grid] = matchbox
         end
 
         replay_grid.play(i)
@@ -155,9 +131,9 @@ module TicTacToe
     PERMUTATIONS = [
       # Rotations (clockwise)
       [0, 1, 2, 3, 4, 5, 6, 7, 8], # 0°
-      [2, 5, 8, 1, 4, 7, 0, 3, 6], # 90°    # problematic
+      [2, 5, 8, 1, 4, 7, 0, 3, 6], # 90°
       [8, 7, 6, 5, 4, 3, 2, 1, 0], # 180°
-      [6, 3, 0, 7, 4, 1, 8, 5, 2], # 270°   # problematic
+      [6, 3, 0, 7, 4, 1, 8, 5, 2], # 270°
       # Mirror + Rotations (clockwise)
       [2, 1, 0, 5, 4, 3, 8, 7, 6], # 0°
       [8, 5, 2, 7, 4, 1, 6, 3, 0], # 90°
@@ -167,8 +143,8 @@ module TicTacToe
 
     def get_permutation(grid)
 
-      result = []
-      smallest_hash = 1.0 / 0.0 # +Infinity
+      result = PERMUTATIONS[0]
+      best_sofar = grid.to_s
 
       PERMUTATIONS.each do |perm|
         permuted_array = []
@@ -176,8 +152,8 @@ module TicTacToe
           permuted_array.push(grid.fields[f])
         end
 
-        if permuted_array.hash < smallest_hash
-          smallest_hash = permuted_array.hash
+        if permuted_array.to_s < best_sofar
+          best_sofar = permuted_array.to_s
           result = perm
         end
       end
