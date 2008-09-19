@@ -87,34 +87,19 @@ module TicTacToe
           canonical_grid = get_canonical_grid(replay_grid, perm)
 
           # Prepare a matchbox if we don't have one yet
-          unless @matchboxes.include?(canonical_grid)
-
-            matchbox = (0..8).collect do |square|
-
-              # Zero beads by default (illegal move)
-              return_value = 0
-
-              # Is that move legal?
-              for move in replay_grid.legal_moves
-                if perm[move] == square
-                  # Return as many beads as there are legal moves. The rationale
-                  # behind this is that there is more diversity earlier in the
-                  # game-tree (i.e. more child-nodes, more to explore)
-                  return_value = replay_grid.legal_moves.length
-                  break
-                end
-              end
-
-              return_value
-            end
-
-            @matchboxes[canonical_grid] = matchbox
-          end
+          @matchboxes[canonical_grid] ||= make_matchbox(canonical_grid);
 
           # Find the move we actually made and adjust its bead-count
-          bead_count = @matchboxes[canonical_grid][perm[i]]
-          bead_count = [1, bead_count + modifier].max
-          @matchboxes[canonical_grid][perm[i]] = bead_count
+          @matchboxes[canonical_grid][perm[i]] += modifier
+
+          # If MENACE has learned that all moves for this gamestate are bad,
+          # reset the learning. If all moves really are bad, this won't make
+          # a difference, but if they're not, starting from scratch gives us
+          # another chance at learning the correct values.
+          if @matchboxes[canonical_grid] == [0]*9
+            @matchboxes[canonical_grid] = make_matchbox(canonical_grid)
+          end
+
         end
 
         replay_grid.play(i)
@@ -165,6 +150,28 @@ module TicTacToe
       end
 
       return canonical_grid
+    end
+
+    def make_matchbox(grid_fields)
+      # Find the number of legal moves by counting empty fields
+      num_legal_moves = grid_fields.inject(0) do |num, field|
+        if field == :empty
+          num + 1
+        else
+          num
+        end
+      end
+
+      # Make the matchbox
+      matchbox = grid_fields.map do |square|
+        if square == :empty
+          num_legal_moves
+        else
+          0
+        end
+      end
+
+      return matchbox
     end
 
   end
