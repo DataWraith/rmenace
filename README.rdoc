@@ -1,3 +1,5 @@
+*Status*: This project is abandoned.
+
 = rMENACE
 
 The "Matchbox Educable Noughts-and-Crosses Engine" and other TicTacToe playing
